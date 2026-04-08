@@ -1,0 +1,693 @@
+.admin-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+  background: #f3f4f6;
+}
+
+.admin-sidebar {
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 24px;
+}
+
+.admin-sidebar h2 {
+  margin-bottom: 4px;
+}
+
+.admin-sidebar p {
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.admin-dashboard {
+  padding: 24px;
+}
+
+.admin-header h2 {
+  margin-top: 0;
+}
+
+.logout-btn {
+  margin-top: 14px;
+  border: none;
+  border-radius: 8px;
+  background: #1d4ed8;
+  color: #fff;
+  padding: 10px 12px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.stat-card-glow {
+  display: flex;
+  align-items: stretch;
+}
+
+.stat-card-inner {
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px;
+  width: 100%;
+  text-align: center;
+}
+
+[data-theme="dark"] .stat-card-inner {
+  background: #0f172a;
+}
+
+.stat-card-inner h4 {
+  margin: 0;
+  color: #475569;
+  font-size: 14px;
+}
+
+[data-theme="dark"] .stat-card-inner h4 {
+  color: #cbd5e1;
+}
+
+.stat-card-inner p {
+  margin: 8px 0 0;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1f2933;
+}
+
+[data-theme="dark"] .stat-card-inner p {
+  color: #60a5fa;
+}
+
+/* Legacy support */
+.stat-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.05);
+}
+
+.stat-card h4 {
+  margin: 0;
+  color: #475569;
+  font-size: 14px;
+}
+
+.stat-card p {
+  margin: 8px 0 0;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.admin-panel {
+  margin-top: 20px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+}
+
+.approval-grid,
+.event-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 12px;
+}
+
+.approval-card,
+.event-admin-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.approval-actions,
+.event-admin-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.approval-actions button,
+.event-admin-actions button,
+.event-form button,
+.download-btn {
+  border: none;
+  border-radius: 8px;
+  background: #1d4ed8;
+  color: #fff;
+  padding: 9px 11px;
+  cursor: pointer;
+}
+
+.approval-actions .danger,
+.event-admin-actions .danger {
+  background: #dc2626;
+}
+
+.event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.form-row input,
+.form-row select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+}
+
+.event-form textarea,
+.opportunity-textarea {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  min-height: 110px;
+  resize: vertical;
+  font: inherit;
+}
+
+.poster-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.poster-label {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.poster-label span {
+  font-weight: 500;
+  color: #374151;
+  font-size: 14px;
+}
+
+.poster-label input[type="file"] {
+  padding: 8px;
+  border: 2px dashed #cbd5e1;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #fff;
+}
+
+.poster-label input[type="file"]:hover:not(:disabled) {
+  border-color: #1d4ed8;
+  background: #eff6ff;
+}
+
+.poster-label input[type="file"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.poster-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  background: white;
+  border-radius: 6px;
+}
+
+.poster-preview img {
+  max-width: 100%;
+  max-height: 180px;
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+.opportunity-form {
+  margin-bottom: 18px;
+}
+
+.opportunity-admin-list h4 {
+  margin: 0 0 10px;
+  color: #0f172a;
+}
+
+.opportunity-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.opportunity-admin-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.opportunity-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.opportunity-card-head h5 {
+  margin: 0;
+  font-size: 15px;
+  color: #0f172a;
+}
+
+.opportunity-admin-card p {
+  margin: 0;
+  color: #475569;
+}
+
+.opportunity-admin-card a {
+  color: #1d4ed8;
+  text-decoration: none;
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.opportunity-admin-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.uploading-text {
+  margin: 0;
+  padding: 6px;
+  color: #f59e0b;
+  font-size: 13px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.submit-btn {
+  padding: 11px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #1d4ed8;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  transition: background 0.2s;
+  margin-top: 4px;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: #1e40af;
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+[data-theme="dark"] .poster-section {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+[data-theme="dark"] .poster-label span {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .poster-label input[type="file"] {
+  background: #0f172a;
+  border-color: #475569;
+}
+
+[data-theme="dark"] .poster-label input[type="file"]:hover:not(:disabled) {
+  background: #1e293b;
+  border-color: #60a5fa;
+}
+
+[data-theme="dark"] .poster-preview {
+  background: #0f172a;
+}
+
+[data-theme="dark"] .event-form textarea,
+[data-theme="dark"] .opportunity-textarea {
+  background: #0f172a;
+  border-color: #475569;
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .opportunity-admin-list h4 {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .opportunity-admin-card {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+[data-theme="dark"] .opportunity-card-head h5 {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .opportunity-admin-card p {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .opportunity-admin-card a {
+  color: #60a5fa;
+}
+
+.event-form input,
+.event-form select,
+.search-input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+}
+
+.members-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-wrap th,
+.table-wrap td {
+  border: 1px solid #e2e8f0;
+  padding: 10px;
+  text-align: left;
+}
+
+.status {
+  text-transform: capitalize;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.status.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status.approved,
+.status.completed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status.rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status.ongoing {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.status.upcoming {
+  background: #fff7ed;
+  color: #9a3412;
+}
+
+.otp-readout {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #0f172a;
+}
+
+.attendance-summary {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #cbd5e1;
+}
+
+.attendance-counts {
+  margin: 0 0 8px;
+  font-size: 13px;
+}
+
+.attendance-export-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.attendance-export-actions button {
+  border: none;
+  border-radius: 8px;
+  background: #334155;
+  color: #fff;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.attendance-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.attendance-columns h5 {
+  margin: 0 0 6px;
+  font-size: 13px;
+}
+
+.attendance-list {
+  margin: 0;
+  padding-left: 16px;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.attendance-list li {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.member-action-btn {
+  border: none;
+  border-radius: 8px;
+  background: #1d4ed8;
+  color: #fff;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.member-attendance-panel {
+  margin-top: 14px;
+  padding: 12px;
+  border: 1px solid #dbe4ef;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.member-attendance-panel h4 {
+  margin: 0 0 8px;
+  color: #0f172a;
+}
+
+.member-attendance-list {
+  max-height: 220px;
+}
+
+.muted {
+  color: #64748b;
+}
+
+@media (max-width: 960px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================
+   DARK THEME
+========================= */
+
+[data-theme="dark"] .admin-layout {
+  background: #0f172a;
+}
+
+[data-theme="dark"] .admin-sidebar {
+  background: #0f172a;
+  border-right: 1px solid #334155;
+}
+
+[data-theme="dark"] .admin-dashboard {
+  background: #0f172a;
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .admin-header h2 {
+  color: #60a5fa;
+}
+
+[data-theme="dark"] .stat-card {
+  background: #1e293b;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.3);
+}
+
+[data-theme="dark"] .stat-card h4 {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .stat-card p {
+  color: #60a5fa;
+}
+
+[data-theme="dark"] .admin-panel {
+  background: #1e293b;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+[data-theme="dark"] .admin-panel h3 {
+  color: #60a5fa;
+}
+
+[data-theme="dark"] .approval-card,
+[data-theme="dark"] .event-admin-card {
+  background: #1e293b;
+  border-color: #334155;
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .approval-card h4,
+[data-theme="dark"] .event-admin-card h4 {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .approval-card p,
+[data-theme="dark"] .event-admin-card p {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .attendance-summary {
+  border-top-color: #475569;
+}
+
+[data-theme="dark"] .attendance-counts,
+[data-theme="dark"] .attendance-columns h5,
+[data-theme="dark"] .attendance-list li {
+  color: #d1d5db;
+}
+
+[data-theme="dark"] .attendance-export-actions button {
+  background: #1f2937;
+  border: 1px solid #374151;
+}
+
+[data-theme="dark"] .member-action-btn {
+  background: #2563eb;
+}
+
+[data-theme="dark"] .member-attendance-panel {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+[data-theme="dark"] .member-attendance-panel h4 {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .otp-readout {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .event-form {
+  background: #1e293b;
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .event-form label {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .event-form input,
+[data-theme="dark"] .event-form select,
+[data-theme="dark"] .event-form textarea {
+  background: #0f172a;
+  border-color: #475569;
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .event-form input[type="date"],
+[data-theme="dark"] .event-form input[type="time"] {
+  color-scheme: dark;
+  padding-right: 36px;
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px 16px;
+}
+
+[data-theme="dark"] .event-form input[type="date"] {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E");
+}
+
+[data-theme="dark"] .event-form input[type="time"] {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpolyline points='12 7 12 12 15 14'/%3E%3C/svg%3E");
+}
+
+[data-theme="dark"] .event-form input[type="date"]::-webkit-calendar-picker-indicator,
+[data-theme="dark"] .event-form input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(2);
+  opacity: 0;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+[data-theme="dark"] .member-table {
+  background: #1e293b;
+  color: #e5e7eb;
+  border-color: #334155;
+}
+
+[data-theme="dark"] .member-table thead {
+  background: #0f172a;
+}
+
+[data-theme="dark"] .member-table th {
+  color: #cbd5e1;
+  border-color: #334155;
+}
+
+[data-theme="dark"] .member-table td {
+  border-color: #334155;
+  color: #d1d5db;
+}
+
+[data-theme="dark"] .member-table tr:hover {
+  background: #334155;
+}

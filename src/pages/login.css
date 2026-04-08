@@ -1,0 +1,131 @@
+.login-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fb, #eef2ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+[data-theme="dark"] .login-page {
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+}
+
+.login-card-glow {
+  width: 100%;
+  max-width: 420px;
+}
+
+.login-card-inner {
+  background: #ffffff;
+  padding: 36px;
+  border-radius: 16px;
+  text-align: center;
+}
+
+[data-theme="dark"] .login-card-inner {
+  background: #1e293b;
+}
+
+/* Legacy support for .login-card class */
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  padding: 36px;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+[data-theme="dark"] .login-card {
+  background: #1e293b;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+}
+.login-header img {
+  width: 64px;
+  margin-bottom: 12px;
+}
+
+.login-header h2 {
+  margin-bottom: 6px;
+  color: #1f2933;
+}
+
+.login-header p {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+[data-theme="dark"] .login-header h2 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .login-header p {
+  color: #9ca3af;
+}
+
+.login-form {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.login-form input {
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+  background: #ffffff;
+  color: #1f2933;
+}
+
+[data-theme="dark"] .login-form input {
+  background: #334155;
+  border-color: #475569;
+  color: #e5e7eb;
+}
+
+.login-form button {
+  margin-top: 8px;
+  padding: 14px;
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.login-form button:disabled {
+  opacity: 0.7;
+}
+
+.login-divider {
+  margin: 24px 0 16px;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .login-divider {
+  color: #6b7280;
+}
+
+.google-login {
+  display: flex;
+  justify-content: center;
+}
+
+.login-footer {
+  margin-top: 24px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.login-footer span {
+  color: #2563eb;
+  cursor: pointer;
+  font-weight: 600;
+}

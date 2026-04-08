@@ -1,0 +1,261 @@
+.events-page {
+  background: #f3f4f6;
+  min-height: 80vh;
+  padding: 36px 0 60px;
+}
+
+.events-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.events-head h1 {
+  margin-bottom: 4px;
+}
+
+.events-head p {
+  margin-top: 0;
+  color: #6b7280;
+}
+
+.event-section {
+  margin-top: 28px;
+}
+
+.opportunity-section {
+  margin-top: 34px;
+}
+
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.opportunity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.event-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+}
+.event-card-glow {
+  display: flex;
+  align-items: stretch;
+}
+
+.event-card-inner {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  width: 100%;
+}
+
+.opportunity-card-glow {
+  display: flex;
+  align-items: stretch;
+}
+
+.opportunity-card-inner {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+[data-theme="dark"] .event-card-inner {
+  background: #1e293b;
+}
+
+.event-poster-container {
+  width: calc(100% + 32px);
+  height: 200px;
+  margin: -16px -16px 12px -16px;
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e5e7eb;
+}
+
+.event-poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Legacy support */
+.event-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.event-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
+.status-badge.upcoming {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge.ongoing {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.status-badge.completed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.open {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.closed {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.event-card ul {
+  padding-left: 18px;
+  color: #4b5563;
+}
+
+.event-actions {
+  margin-top: 10px;
+}
+
+.action-btn {
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #fff;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.action-btn.secondary {
+  background: #334155;
+}
+
+.opportunity-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.apply-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #f59e0b, #ea580c);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.apply-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(234, 88, 12, 0.24);
+}
+
+.registered-pill {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 13px;
+}
+
+.otp-box {
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.otp-box input {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.empty-state {
+  color: #6b7280;
+}
+
+/* =========================
+   DARK THEME
+========================= */
+
+[data-theme="dark"] .events-page {
+  background: #0f172a;
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .events-section h2 {
+  color: #60a5fa;
+}
+
+[data-theme="dark"] .event-card {
+  background: #1e293b;
+  color: #e5e7eb;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+[data-theme="dark"] .opportunity-card-inner {
+  background: #1e293b;
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .apply-btn {
+  color: #fff;
+}
+
+[data-theme="dark"] .event-card h3 {
+  color: #f0f9ff;
+}
+
+[data-theme="dark"] .event-card p {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .otp-box input {
+  background: #0f172a;
+  border-color: #475569;
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .empty-state {
+  color: #9ca3af;
+}
