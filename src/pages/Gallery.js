@@ -1,55 +1,81 @@
+import { useEffect, useMemo, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { getGalleryImages } from "../services/galleryService";
 import "./gallery.css";
 
-const WOMENSDAY_IMAGES = [
-  "https://res.cloudinary.com/dtpl599ko/image/upload/v1775196212/IMG_0799_syeych.heic",
-  "https://res.cloudinary.com/dtpl599ko/image/upload/v1775196211/IMG_0727_sswumy.heic",
-  "https://res.cloudinary.com/dtpl599ko/image/upload/v1775196209/IMG_0768_kgc0ls.heic",
-  "https://res.cloudinary.com/dtpl599ko/image/upload/v1775196199/IMG_0677_fb9uha.heic",
-  "https://res.cloudinary.com/dtpl599ko/image/upload/v1775196197/WhatsApp_Image_2026-03-29_at_6.31.16_AM_qmhu1f.jpg",
-  "https://res.cloudinary.com/dtpl599ko/image/upload/v1775196193/IMG_0822.JPG_fnwcgo.jpg",
-  "https://res.cloudinary.com/dtpl599ko/image/upload/v1775196161/IMG_0761_vc6qfg.heic",
-];
-
-const YUVA_MEETING_IMAGES = [
-  // Add meeting image URLs here.
-];
-
-const MENTAL_HEALTH_AWARENESS_IMAGES = [
-  "https://res.cloudinary.com/dtpl599ko/image/upload/v1775198732/mentalhealth3_vfwh7p.jpg",
-  "https://res.cloudinary.com/dtpl599ko/image/upload/v1775198732/mentalhealth1_mbxww2.jpg",
-  "https://res.cloudinary.com/dtpl599ko/image/upload/v1775198732/mentalhealth2_pigrm3.jpg",
-  "https://res.cloudinary.com/dtpl599ko/image/upload/v1775198732/mentalhealth4_xlfiid.jpg",
-];
-
-const GALLERY_SECTIONS = [
-  {
-    key: "womensday",
+const SECTION_META = {
+  womensday: {
     title: "Women's Day Celebration",
-    description: "All current uploaded images are listed here.",
-    images: WOMENSDAY_IMAGES,
+    description: "All uploaded images from Women's Day activities.",
   },
-  {
-    key: "meetings",
+  meetings: {
     title: "YUVA Meetings",
-    description: "Meeting images will appear here once added.",
-    images: YUVA_MEETING_IMAGES,
+    description: "Meeting highlights and snapshots.",
   },
-  {
-    key: "mental-health-awareness",
+  "mental-health-awareness": {
     title: "Mental Health Awareness Programme",
-    description: "Highlights from the awareness programme activities.",
-    images: MENTAL_HEALTH_AWARENESS_IMAGES,
+    description: "Highlights from awareness programme activities.",
   },
-];
+  general: {
+    title: "General Gallery",
+    description: "Other YUVA moments and milestones.",
+  },
+};
+
+const toCategoryTitle = (category) =>
+  String(category || "general")
+    .split("-")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ") || "General";
 
 const toOptimizedCloudinaryUrl = (url) => {
-  if (!url.includes("/image/upload/")) return url;
+  if (!url || !url.includes("/image/upload/")) return url;
   return url.replace("/image/upload/", "/image/upload/f_auto,q_auto/");
 };
 
 const Gallery = () => {
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadGallery = async () => {
+      try {
+        const data = await getGalleryImages();
+        setImages(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error(err);
+        setImages([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadGallery();
+  }, []);
+
+  const sections = useMemo(() => {
+    const grouped = {};
+
+    images.forEach((image) => {
+      const category = image.category || "general";
+      if (!grouped[category]) {
+        grouped[category] = [];
+      }
+      grouped[category].push(image);
+    });
+
+    return Object.entries(grouped).map(([key, sectionImages]) => ({
+      key,
+      title: SECTION_META[key]?.title || toCategoryTitle(key),
+      description:
+        SECTION_META[key]?.description ||
+        `${toCategoryTitle(key)} highlights from YUVA activities.`,
+      images: sectionImages,
+    }));
+  }, [images]);
+
   return (
     <>
       <Navbar />
@@ -60,18 +86,17 @@ const Gallery = () => {
           <p>Moments, memories, and milestones from YUVA activities.</p>
         </section>
 
-        {GALLERY_SECTIONS.every((section) => section.images.length === 0) ? (
+        {loading ? (
+          <section className="gallery-empty">
+            <h3>Loading gallery...</h3>
+          </section>
+        ) : sections.every((section) => section.images.length === 0) ? (
           <section className="gallery-empty">
             <h3>No gallery images yet</h3>
-            <p>
-              Add your Cloudinary links in
-              <strong> src/pages/Gallery.js</strong> inside
-              <strong> WOMENSDAY_IMAGES</strong> or
-              <strong> YUVA_MEETING_IMAGES</strong>.
-            </p>
+            <p>Admin can now add images directly from the dashboard.</p>
           </section>
         ) : (
-          GALLERY_SECTIONS.map((section) => (
+          sections.map((section) => (
             <section className="gallery-section" key={section.key}>
               <div className="gallery-section-head">
                 <h2>{section.title}</h2>
@@ -84,11 +109,11 @@ const Gallery = () => {
                 </div>
               ) : (
                 <div className="gallery-grid">
-                  {section.images.map((imageUrl, index) => (
-                    <article className="gallery-item" key={`${section.key}-${imageUrl}-${index}`}>
+                  {section.images.map((image, index) => (
+                    <article className="gallery-item" key={image._id || `${section.key}-${index}`}>
                       <img
-                        src={toOptimizedCloudinaryUrl(imageUrl)}
-                        alt={`${section.title} ${index + 1}`}
+                        src={toOptimizedCloudinaryUrl(image.imageUrl)}
+                        alt={image.title || `${section.title} ${index + 1}`}
                         loading="lazy"
                       />
                     </article>
