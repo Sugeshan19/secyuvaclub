@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -16,22 +16,12 @@ import VerifyEmail from "./pages/VerifyEmail";
 import FAQs from "./pages/faq";
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem("token"));
-  const [role, setRole] = useState(localStorage.getItem("role"));
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
 
   useEffect(() => {
     // Set dark theme by default
     document.documentElement.setAttribute("data-theme", "dark");
-  }, []);
-
-  useEffect(() => {
-    const handleStorage = () => {
-      setToken(localStorage.getItem("token"));
-      setRole(localStorage.getItem("role"));
-    };
-
-    window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
   }, []);
 
   return (
