@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import BorderGlow from "../components/BorderGlow";
@@ -10,6 +10,23 @@ const Login = ({ isAdmin = false }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const redirectAfterLogin = (nextRole) => {
+    const target = nextRole === "admin" ? "/admin/dashboard" : "/home";
+    // Hard navigation avoids occasional stale-router state after OAuth callbacks.
+    window.location.replace(target);
+  };
+
+  useEffect(() => {
+    const existingToken = localStorage.getItem("token");
+    const existingRole = localStorage.getItem("role");
+
+    if (existingToken) {
+      navigate(existingRole === "admin" ? "/admin/dashboard" : "/home", {
+        replace: true,
+      });
+    }
+  }, [navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -32,7 +49,7 @@ const Login = ({ isAdmin = false }) => {
       localStorage.setItem("token", data.token);
       localStorage.setItem("role", data.role);
       window.dispatchEvent(new Event("authChanged"));
-      navigate(data.role === "admin" ? "/admin/dashboard" : "/home");
+      redirectAfterLogin(data.role);
     } catch {
       alert("Unable to connect to server");
     } finally {
@@ -41,24 +58,31 @@ const Login = ({ isAdmin = false }) => {
   };
 
   const handleGoogleSuccess = async (credentialResponse) => {
-    if (!credentialResponse?.credential) return;
-
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/google`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token: credentialResponse.credential }),
-    });
-
-    const data = await res.json();
-    if (!res.ok) {
-      alert(data.message || "Google login failed");
+    if (!credentialResponse?.credential) {
+      alert("Google credential missing");
       return;
     }
 
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("role", data.role);
-    window.dispatchEvent(new Event("authChanged"));
-    navigate("/home");
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/google`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: credentialResponse.credential }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.message || "Google login failed");
+        return;
+      }
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("role", data.role || "user");
+      window.dispatchEvent(new Event("authChanged"));
+      redirectAfterLogin(data.role || "user");
+    } catch {
+      alert("Unable to connect to server");
+    }
   };
 
   return (
