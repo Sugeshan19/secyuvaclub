@@ -142,8 +142,21 @@
 }
 
 @media (max-width: 768px) {
+  .verticals-page {
+    padding: 22px 14px 34px;
+  }
+
+  .verticals-hero-card {
+    margin-bottom: 30px;
+    padding: 24px 14px;
+  }
+
   .verticals-hero-card h1 {
     font-size: 2rem;
+  }
+
+  .verticals-hero-card p {
+    font-size: 1rem;
   }
 
   .vertical-icon img {
@@ -153,6 +166,22 @@
 
   .verticals-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .vertical-card {
+    min-height: 180px;
+    padding: 8px 4px;
+  }
+
+  .vertical-card h3 {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .verticals-hero-card h1 {
+    font-size: 1.75rem;
   }
 }
 

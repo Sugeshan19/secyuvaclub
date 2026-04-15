@@ -76,8 +76,35 @@ textarea {
 
 /* MOBILE */
 @media (max-width: 768px) {
+  .membership-page {
+    padding: 30px 0;
+  }
+
+  .membership-wrapper {
+    padding: 0 14px;
+  }
+
+  .membership-header h1 {
+    font-size: 26px;
+  }
+
+  .membership-card {
+    padding: 20px;
+  }
+
   .form-grid {
     grid-template-columns: 1fr;
+  }
+
+  .form-grid input,
+  .form-grid select,
+  .form-grid textarea,
+  .submit-btn {
+    font-size: 16px;
+  }
+
+  .already-member {
+    padding: 20px 8px;
   }
 }
 

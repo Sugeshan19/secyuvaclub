@@ -81,8 +81,31 @@
 
 /* MOBILE */
 @media (max-width: 768px) {
+  .faq-page {
+    padding: 30px 0;
+  }
+
+  .faq-wrapper {
+    padding: 0 14px;
+  }
+
+  .faq-card {
+    padding: 18px;
+  }
+
   .faq-hero h1 {
     font-size: 26px;
+  }
+
+  .faq-question {
+    font-size: 15px;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 420px) {
+  .faq-hero h1 {
+    font-size: 24px;
   }
 }
 

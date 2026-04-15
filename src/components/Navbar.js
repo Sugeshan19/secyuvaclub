@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./navbar.css";
 import {
@@ -9,11 +9,13 @@ import {
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [openNotifications, setOpenNotifications] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     if (!token) {
@@ -36,10 +38,27 @@ const Navbar = () => {
     loadNotifications();
   }, [token]);
 
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    setOpenNotifications(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 900) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   if (role === "admin") return null;
 
   const handleLogout = () => {
     localStorage.clear();
+    setMobileMenuOpen(false);
     // hard redirect so the app reloads and shows login immediately
     window.location.href = "/login";
   };
@@ -75,29 +94,41 @@ const Navbar = () => {
           </div>
         </div>
 
+        <button
+          className="nav-toggle"
+          type="button"
+          aria-label="Toggle menu"
+          aria-expanded={mobileMenuOpen}
+          onClick={() => setMobileMenuOpen((prev) => !prev)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+
         {/* LINKS */}
-        <nav className="nav-links">
-          <NavLink to="/home" className="nav-item">
+        <nav className={`nav-links ${mobileMenuOpen ? "open" : ""}`}>
+          <NavLink to="/home" className="nav-item" onClick={() => setMobileMenuOpen(false)}>
             Home
           </NavLink>
-          <NavLink to="/about" className="nav-item">
+          <NavLink to="/about" className="nav-item" onClick={() => setMobileMenuOpen(false)}>
             About
           </NavLink>
-          <NavLink to="/verticals" className="nav-item">
+          <NavLink to="/verticals" className="nav-item" onClick={() => setMobileMenuOpen(false)}>
             Verticals
           </NavLink>
-          <NavLink to="/gallery" className="nav-item">
+          <NavLink to="/gallery" className="nav-item" onClick={() => setMobileMenuOpen(false)}>
             Gallery
           </NavLink>
-          <NavLink to="/membership" className="nav-item">
+          <NavLink to="/membership" className="nav-item" onClick={() => setMobileMenuOpen(false)}>
             Membership
           </NavLink>
-          <NavLink to="/events" className="nav-item">
+          <NavLink to="/events" className="nav-item" onClick={() => setMobileMenuOpen(false)}>
             Events
           </NavLink>
           {token ? (
             <>
-              <NavLink to="/profile" className="nav-item">
+              <NavLink to="/profile" className="nav-item" onClick={() => setMobileMenuOpen(false)}>
                 Profile
               </NavLink>
 
@@ -144,10 +175,10 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <NavLink to="/login" className="nav-item">
+              <NavLink to="/login" className="nav-item" onClick={() => setMobileMenuOpen(false)}>
                 Login
               </NavLink>
-              <NavLink to="/signup" className="nav-item">
+              <NavLink to="/signup" className="nav-item" onClick={() => setMobileMenuOpen(false)}>
                 Signup
               </NavLink>
             </>

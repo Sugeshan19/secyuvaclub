@@ -259,3 +259,18 @@
 [data-theme="dark"] .empty-state {
   color: #9ca3af;
 }
+
+@media (max-width: 768px) {
+  .events-page {
+    padding: 24px 0 38px;
+  }
+
+  .events-container {
+    padding: 0 14px;
+  }
+
+  .event-grid,
+  .opportunity-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -266,7 +266,45 @@
 }
 
 @media (max-width: 768px) {
+  .about-page {
+    padding: 24px 0;
+  }
+
+  .about-hero-card {
+    margin: 0 14px;
+    padding: 24px 16px;
+  }
+
+  .about-info-grid,
+  .about-section,
+  .team-section {
+    padding: 0 14px;
+    margin: 28px auto;
+  }
+
+  .about-section.light,
+  .team-section.light {
+    padding: 24px 14px;
+  }
+
   .team-grid.leadership-grid {
     grid-template-columns: 1fr;
+  }
+
+  .team-grid,
+  .bullet-grid {
+    gap: 14px;
+  }
+
+  .team-card-inner,
+  .bullet-card,
+  .info-card {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-hero-card h1 {
+    font-size: 1.8rem;
   }
 }

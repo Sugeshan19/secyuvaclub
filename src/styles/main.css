@@ -1782,12 +1782,73 @@ section {
    RESPONSIVE
 ========================= */
 @media (max-width: 768px) {
+  .home-hero {
+    min-height: 72vh;
+    height: auto;
+    background-size: cover;
+  }
+
+  .hero-overlay {
+    padding: 24px 14px;
+  }
+
+  .hero-content {
+    max-width: 100%;
+  }
+
   .home-hero h1 {
-    font-size: 36px;
+    font-size: 32px;
+    margin-bottom: 14px;
+  }
+
+  .home-hero p {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .hero-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .btn-primary,
+  .btn-outline {
+    width: 100%;
+    padding: 12px 14px;
+  }
+
+  .home-stats,
+  .home-about,
+  .home-initiatives,
+  .home-cta {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .home-stats,
+  .home-initiatives {
+    gap: 14px;
   }
 
   .home-cta h2 {
     font-size: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-hero h1 {
+    font-size: 28px;
+  }
+
+  .home-about h2,
+  .home-cta h2 {
+    font-size: 24px;
+  }
+
+  .stat-card,
+  .initiative-card {
+    padding: 20px;
   }
 }
 

@@ -69,14 +69,24 @@
 
 /* MOBILE */
 @media (max-width: 900px) {
+  .footer {
+    padding: 44px 18px 22px;
+  }
+
   .footer-container {
     grid-template-columns: 1fr 1fr;
+    gap: 24px;
   }
 }
 
 @media (max-width: 600px) {
   .footer-container {
     grid-template-columns: 1fr;
-    text-align: center;
+    text-align: left;
+    gap: 18px;
+  }
+
+  .footer-bottom {
+    margin-top: 28px;
   }
 }

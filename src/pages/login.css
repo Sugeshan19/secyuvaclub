@@ -116,6 +116,11 @@
 .google-login {
   display: flex;
   justify-content: center;
+  width: 100%;
+}
+
+.google-login > div {
+  max-width: 100%;
 }
 
 .login-footer {
@@ -128,4 +133,30 @@
   color: #2563eb;
   cursor: pointer;
   font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .login-page {
+    padding: 14px;
+    align-items: flex-start;
+  }
+
+  .login-card-inner,
+  .login-card {
+    padding: 22px 16px;
+    border-radius: 14px;
+  }
+
+  .login-header img {
+    width: 54px;
+  }
+
+  .login-form {
+    margin-top: 18px;
+    gap: 12px;
+  }
+
+  .login-footer {
+    line-height: 1.5;
+  }
 }
