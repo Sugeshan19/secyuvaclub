@@ -474,7 +474,8 @@ const AdminDashboard = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
-    navigate("/login");
+    window.dispatchEvent(new Event("authChanged"));
+    navigate("/admin/login", { replace: true });
   };
 
   return (

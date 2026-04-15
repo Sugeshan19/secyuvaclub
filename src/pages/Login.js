@@ -4,7 +4,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import BorderGlow from "../components/BorderGlow";
 import "./login.css";
 
-const Login = () => {
+const Login = ({ isAdmin = false }) => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -31,6 +31,7 @@ const Login = () => {
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("role", data.role);
+      window.dispatchEvent(new Event("authChanged"));
       navigate(data.role === "admin" ? "/admin/dashboard" : "/home");
     } catch {
       alert("Unable to connect to server");
@@ -56,6 +57,7 @@ const Login = () => {
 
     localStorage.setItem("token", data.token);
     localStorage.setItem("role", data.role);
+    window.dispatchEvent(new Event("authChanged"));
     navigate("/home");
   };
 
@@ -73,8 +75,8 @@ const Login = () => {
 
         <div className="login-header">
           <img src="/images/logo.png" alt="YUVA" />
-          <h2>Welcome back</h2>
-          <p>Sign in to continue to YUVA</p>
+          <h2>{isAdmin ? "Admin sign in" : "Welcome back"}</h2>
+          <p>{isAdmin ? "Sign in to continue to YUVA Admin" : "Sign in to continue to YUVA"}</p>
         </div>
 
         <form onSubmit={handleLogin} className="login-form">
@@ -99,19 +101,23 @@ const Login = () => {
           </button>
         </form>
 
-        <div className="login-divider">OR</div>
+        {!isAdmin && (
+          <>
+            <div className="login-divider">OR</div>
 
-        <div className="google-login">
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={() => alert("Google Login Failed")}
-          />
-        </div>
+            <div className="google-login">
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={() => alert("Google Login Failed")}
+              />
+            </div>
 
-        <p className="login-footer">
-          Don't have an account?{" "}
-          <span onClick={() => navigate("/signup")}>Create one</span>
-        </p>
+            <p className="login-footer">
+              Don't have an account?{" "}
+              <span onClick={() => navigate("/signup")}>Create one</span>
+            </p>
+          </>
+        )}
 
         </div>
       </BorderGlow>

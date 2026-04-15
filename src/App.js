@@ -1,8 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import AdminLogin from "./pages/AdminLogin";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -16,12 +17,34 @@ import VerifyEmail from "./pages/VerifyEmail";
 import FAQs from "./pages/faq";
 
 function App() {
-  const token = localStorage.getItem("token");
-  const role = localStorage.getItem("role");
+  const [auth, setAuth] = useState(() => ({
+    token: localStorage.getItem("token"),
+    role: localStorage.getItem("role"),
+  }));
+
+  const token = auth.token;
+  const role = auth.role;
 
   useEffect(() => {
     // Set dark theme by default
     document.documentElement.setAttribute("data-theme", "dark");
+  }, []);
+
+  useEffect(() => {
+    const syncAuth = () => {
+      setAuth({
+        token: localStorage.getItem("token"),
+        role: localStorage.getItem("role"),
+      });
+    };
+
+    window.addEventListener("storage", syncAuth);
+    window.addEventListener("authChanged", syncAuth);
+
+    return () => {
+      window.removeEventListener("storage", syncAuth);
+      window.removeEventListener("authChanged", syncAuth);
+    };
   }, []);
 
   return (
@@ -52,6 +75,21 @@ function App() {
               )
             ) : (
               <Login />
+            )
+          }
+        />
+
+        <Route
+          path="/admin/login"
+          element={
+            token ? (
+              role === "admin" ? (
+                <Navigate to="/admin/dashboard" replace />
+              ) : (
+                <Navigate to="/home" replace />
+              )
+            ) : (
+              <AdminLogin />
             )
           }
         />
