@@ -1785,7 +1785,9 @@ section {
   .home-hero {
     min-height: 72vh;
     height: auto;
-    background-size: cover;
+    background-size: contain;
+    background-position: center top;
+    background-color: #000;
   }
 
   .hero-overlay {
