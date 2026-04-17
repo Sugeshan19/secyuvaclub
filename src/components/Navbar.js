@@ -117,6 +117,9 @@ const Navbar = () => {
           <NavLink to="/verticals" className="nav-item" onClick={() => setMobileMenuOpen(false)}>
             Verticals
           </NavLink>
+          <NavLink to="/careers" className="nav-item" onClick={() => setMobileMenuOpen(false)}>
+            Careers
+          </NavLink>
           <NavLink to="/gallery" className="nav-item" onClick={() => setMobileMenuOpen(false)}>
             Gallery
           </NavLink>

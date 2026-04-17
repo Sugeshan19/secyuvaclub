@@ -7,6 +7,14 @@ export const getMembers = (search = "") =>
 
 export const getPendingMembers = () => apiRequest("/api/admin/pending-members");
 
+export const getCareerApplications = ({ search = "", domain = "", status = "" } = {}) =>
+  apiRequest(
+    `/api/admin/careers?search=${encodeURIComponent(search)}&domain=${encodeURIComponent(domain)}&status=${encodeURIComponent(status)}`
+  );
+
+export const updateCareerApplicationStatus = (applicationId, status) =>
+  patchJson(`/api/admin/careers/${applicationId}/status`, { status });
+
 export const getMemberAttendance = (memberId) =>
   apiRequest(`/api/admin/members/${memberId}/attendance`);
 
@@ -17,18 +25,6 @@ export const rejectMember = (membershipId) =>
   patchJson(`/api/admin/reject/${membershipId}`);
 
 export const createEvent = (payload) => postJson("/api/events", payload);
-
-export const getAllHiringOpportunities = () =>
-  apiRequest("/api/hiring-opportunities/admin");
-
-export const createHiringOpportunity = (payload) =>
-  postJson("/api/hiring-opportunities", payload);
-
-export const updateHiringOpportunity = (id, payload) =>
-  patchJson(`/api/hiring-opportunities/${id}`, payload);
-
-export const deleteHiringOpportunity = (id) =>
-  apiRequest(`/api/hiring-opportunities/${id}`, { method: "DELETE" });
 
 export const uploadEventPoster = async (file) => {
   const token = localStorage.getItem("token");

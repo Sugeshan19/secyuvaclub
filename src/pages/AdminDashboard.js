@@ -4,18 +4,16 @@ import BorderGlow from "../components/BorderGlow";
 import {
   approveMember,
   createEvent,
-  createHiringOpportunity,
   deleteEvent,
-  deleteHiringOpportunity,
+  getCareerApplications,
   getAdminStats,
-  getAllHiringOpportunities,
   getEventAttendanceSummary,
   getMemberAttendance,
   getMembers,
   getPendingMembers,
   rejectMember,
   startAttendance,
-  updateHiringOpportunity,
+  updateCareerApplicationStatus,
   uploadEventPoster,
 } from "../services/adminService";
 import {
@@ -46,6 +44,14 @@ const AdminDashboard = () => {
   const [pendingMembers, setPendingMembers] = useState([]);
   const [search, setSearch] = useState("");
 
+  const [careerApplications, setCareerApplications] = useState([]);
+  const [careerFilters, setCareerFilters] = useState({
+    search: "",
+    domain: "",
+    status: "",
+  });
+  const [careerLoading, setCareerLoading] = useState(false);
+
   const [events, setEvents] = useState([]);
   const [activeOtp, setActiveOtp] = useState({});
   const [attendanceSummary, setAttendanceSummary] = useState({});
@@ -67,15 +73,6 @@ const AdminDashboard = () => {
   const [posterFile, setPosterFile] = useState(null);
   const [posterPreview, setPosterPreview] = useState(null);
   const [posterUploading, setPosterUploading] = useState(false);
-
-  const [hiringOpportunities, setHiringOpportunities] = useState([]);
-  const [opportunityForm, setOpportunityForm] = useState({
-    title: "",
-    description: "",
-    googleFormLink: "",
-    status: "open",
-  });
-  const [opportunitySaving, setOpportunitySaving] = useState(false);
 
   const [galleryImages, setGalleryImages] = useState([]);
   const [galleryForm, setGalleryForm] = useState({
@@ -114,19 +111,22 @@ const AdminDashboard = () => {
     }
   }, []);
 
+  const fetchCareerApplications = useCallback(async () => {
+    try {
+      setCareerLoading(true);
+      const data = await getCareerApplications(careerFilters);
+      setCareerApplications(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setCareerLoading(false);
+    }
+  }, [careerFilters]);
+
   const fetchEvents = useCallback(async () => {
     try {
       const data = await getEvents();
       setEvents(data);
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
-
-  const fetchHiringOpportunities = useCallback(async () => {
-    try {
-      const data = await getAllHiringOpportunities();
-      setHiringOpportunities(data);
     } catch (err) {
       console.error(err);
     }
@@ -145,12 +145,12 @@ const AdminDashboard = () => {
     fetchStats();
     fetchPendingMembers();
     fetchEvents();
-    fetchHiringOpportunities();
     fetchGalleryImages();
+    fetchCareerApplications();
   }, [
     fetchEvents,
+    fetchCareerApplications,
     fetchGalleryImages,
-    fetchHiringOpportunities,
     fetchPendingMembers,
     fetchStats,
   ]);
@@ -158,6 +158,10 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchMembers();
   }, [fetchMembers]);
+
+  useEffect(() => {
+    fetchCareerApplications();
+  }, [fetchCareerApplications]);
 
   const handleDownloadExcel = async () => {
     try {
@@ -289,41 +293,19 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleCreateOpportunity = async (e) => {
-    e.preventDefault();
+  const handleUpdateCareerStatus = async (applicationId, status) => {
     try {
-      setOpportunitySaving(true);
-      await createHiringOpportunity(opportunityForm);
-      setOpportunityForm({
-        title: "",
-        description: "",
-        googleFormLink: "",
-        status: "open",
-      });
-      await fetchHiringOpportunities();
-    } catch (err) {
-      alert(err.message || "Failed to create hiring opportunity");
-    } finally {
-      setOpportunitySaving(false);
-    }
-  };
+      await updateCareerApplicationStatus(applicationId, status);
+      if (status === "rejected") {
+        setCareerApplications((prev) =>
+          prev.filter((application) => application._id !== applicationId)
+        );
+        return;
+      }
 
-  const handleToggleOpportunityStatus = async (opportunity) => {
-    try {
-      const nextStatus = opportunity.status === "open" ? "closed" : "open";
-      await updateHiringOpportunity(opportunity._id, { status: nextStatus });
-      await fetchHiringOpportunities();
+      await fetchCareerApplications();
     } catch (err) {
-      alert(err.message || "Failed to update opportunity");
-    }
-  };
-
-  const handleDeleteOpportunity = async (id) => {
-    try {
-      await deleteHiringOpportunity(id);
-      await fetchHiringOpportunities();
-    } catch (err) {
-      alert(err.message || "Failed to delete opportunity");
+      alert(err.message || "Failed to update application status");
     }
   };
 
@@ -510,10 +492,10 @@ const AdminDashboard = () => {
             Gallery Images
           </button>
           <button
-            className={activeSection === "hiring" ? "nav-btn active" : "nav-btn"}
-            onClick={() => setActiveSection("hiring")}
+            className={activeSection === "careers" ? "nav-btn active" : "nav-btn"}
+            onClick={() => setActiveSection("careers")}
           >
-            Hiring
+            Careers
           </button>
           <button
             className={activeSection === "members" ? "nav-btn active" : "nav-btn"}
@@ -632,7 +614,7 @@ const AdminDashboard = () => {
                       <span className={`status ${event.status}`}>{event.status}</span>
 
                       <div className="event-admin-actions">
-                        <button onClick={() => handleStartAttendance(event._id)}>Start Attendance</button>
+                        <button onClick={() => handleStartAttendance(event._id)}>Start IN OTP</button>
                         <button onClick={() => handleViewAttendance(event._id)}>
                           {attendanceLoading[event._id] ? "Loading..." : "View Attendance"}
                         </button>
@@ -641,7 +623,7 @@ const AdminDashboard = () => {
 
                       {activeOtp[event._id] && (
                         <p className="otp-readout">
-                          OTP: <strong>{activeOtp[event._id].otpCode}</strong> (expires {new Date(activeOtp[event._id].otpExpiry).toLocaleTimeString()})
+                          IN OTP: <strong>{activeOtp[event._id].otpCode}</strong> (expires {new Date(activeOtp[event._id].otpExpiry).toLocaleTimeString()})
                         </p>
                       )}
 
@@ -727,69 +709,105 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {activeSection === "hiring" && (
+        {activeSection === "careers" && (
           <div className="admin-panel">
-            <h3>Post Hiring Opportunity</h3>
-            <form className="event-form opportunity-form" onSubmit={handleCreateOpportunity}>
-              <div className="form-row">
-                <input
-                  placeholder="Opportunity title"
-                  value={opportunityForm.title}
-                  onChange={(e) => setOpportunityForm((prev) => ({ ...prev, title: e.target.value }))}
-                  required
-                />
-                <input
-                  placeholder="Google form link"
-                  value={opportunityForm.googleFormLink}
-                  onChange={(e) => setOpportunityForm((prev) => ({ ...prev, googleFormLink: e.target.value }))}
-                  required
-                />
-              </div>
-              <textarea
-                className="opportunity-textarea"
-                placeholder="Opportunity description"
-                value={opportunityForm.description}
-                onChange={(e) => setOpportunityForm((prev) => ({ ...prev, description: e.target.value }))}
-              />
-              <select
-                value={opportunityForm.status}
-                onChange={(e) => setOpportunityForm((prev) => ({ ...prev, status: e.target.value }))}
-              >
-                <option value="open">Open</option>
-                <option value="closed">Closed</option>
-              </select>
-              <button type="submit" className="submit-btn" disabled={opportunitySaving}>
-                {opportunitySaving ? "Posting..." : "Post Opportunity"}
-              </button>
-            </form>
+            <h3>Career Applications</h3>
 
-            <div className="opportunity-admin-list">
-              <h4>Posted Opportunities</h4>
-              {hiringOpportunities.length === 0 ? (
-                <p className="muted">No hiring opportunities yet.</p>
-              ) : (
-                <div className="opportunity-admin-grid">
-                  {hiringOpportunities.map((opportunity) => (
-                    <div className="opportunity-admin-card" key={opportunity._id}>
-                      <div className="opportunity-card-head">
-                        <h5>{opportunity.title}</h5>
-                        <span className={`status ${opportunity.status}`}>{opportunity.status}</span>
-                      </div>
-                      <p>{opportunity.description || "No description provided."}</p>
-                      <a href={opportunity.googleFormLink} target="_blank" rel="noreferrer">Google Form Link</a>
-                      <div className="opportunity-admin-actions">
-                        <button onClick={() => handleToggleOpportunityStatus(opportunity)}>
-                          {opportunity.status === "open" ? "Close" : "Open"}
-                        </button>
-                        <button className="danger" onClick={() => handleDeleteOpportunity(opportunity._id)}>
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+            <div className="career-filter-grid">
+              <input
+                className="search-input"
+                type="text"
+                placeholder="Search by name / email / phone / department"
+                value={careerFilters.search}
+                onChange={(e) =>
+                  setCareerFilters((prev) => ({ ...prev, search: e.target.value }))
+                }
+              />
+
+              <select
+                value={careerFilters.domain}
+                onChange={(e) =>
+                  setCareerFilters((prev) => ({ ...prev, domain: e.target.value }))
+                }
+              >
+                <option value="">All Domains</option>
+                <option value="PUBLIC RELATIONS">PUBLIC RELATIONS</option>
+                <option value="EDITORIAL">EDITORIAL</option>
+                <option value="PHOTOGRAPHY">PHOTOGRAPHY</option>
+                <option value="VIDEOGRAPHY">VIDEOGRAPHY</option>
+                <option value="EDITING - Video">EDITING - Video</option>
+                <option value="STUDENT RELATIONS">STUDENT RELATIONS</option>
+                <option value="CONTENT CREATOR">CONTENT CREATOR</option>
+                <option value="CONTENT WRITER">CONTENT WRITER</option>
+              </select>
+
+              <select
+                value={careerFilters.status}
+                onChange={(e) =>
+                  setCareerFilters((prev) => ({ ...prev, status: e.target.value }))
+                }
+              >
+                <option value="">All Statuses</option>
+                <option value="new">New</option>
+                <option value="shortlisted">Shortlisted</option>
+              </select>
             </div>
+
+            {careerLoading ? (
+              <p className="muted">Loading career applications...</p>
+            ) : careerApplications.length === 0 ? (
+              <p className="muted">No career applications found.</p>
+            ) : (
+              <div className="career-application-grid">
+                {careerApplications.map((application) => (
+                  <div key={application._id} className="career-application-card">
+                    <div className="career-card-top">
+                      <h4>{application.name}</h4>
+                      <span className={`status ${application.status}`}>{application.status}</span>
+                    </div>
+
+                    <p><strong>Domain:</strong> {application.domain}</p>
+                    <p><strong>Email:</strong> {application.email}</p>
+                    <p><strong>Phone:</strong> {application.phone}</p>
+                    <p><strong>Department:</strong> {application.department || "-"}</p>
+                    <p><strong>Year:</strong> {application.year || "-"}</p>
+                    <p><strong>Applied:</strong> {new Date(application.createdAt).toLocaleString()}</p>
+
+                    {application.experience && (
+                      <p><strong>Experience:</strong> {application.experience}</p>
+                    )}
+
+                    {application.portfolioLink && (
+                      <p>
+                        <strong>Portfolio:</strong>{" "}
+                        <a href={application.portfolioLink} target="_blank" rel="noreferrer">
+                          Open Link
+                        </a>
+                      </p>
+                    )}
+
+                    <div className="career-card-actions">
+                      <button
+                        onClick={() => handleUpdateCareerStatus(application._id, "shortlisted")}
+                      >
+                        {application.status === "shortlisted" ? "Shortlisted" : "Shortlist"}
+                      </button>
+                      <button
+                        onClick={() => handleUpdateCareerStatus(application._id, "rejected")}
+                        className="danger"
+                      >
+                        Reject
+                      </button>
+                      <button
+                        onClick={() => handleUpdateCareerStatus(application._id, "new")}
+                      >
+                        Mark New
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 

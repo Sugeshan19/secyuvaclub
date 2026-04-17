@@ -12,6 +12,7 @@ import Events from "./pages/Events";
 import About from "./pages/About";
 import Verticals from "./pages/Verticals";
 import Gallery from "./pages/Gallery";
+import Careers from "./pages/Careers";
 import ProtectedRoute from "./components/ProtectedRoute";
 import VerifyEmail from "./pages/VerifyEmail";
 import FAQs from "./pages/faq";
@@ -146,6 +147,8 @@ function App() {
         <Route path="/verticals" element={<Verticals />} />
 
         <Route path="/gallery" element={<Gallery />} />
+
+        <Route path="/careers" element={<Careers />} />
 
         {/* ADMIN ROUTE */}
         <Route

@@ -7,7 +7,6 @@ import {
   registerForEvent,
   verifyAttendanceOtp,
 } from "../services/eventService";
-import { getOpenHiringOpportunities } from "../services/hiringOpportunityService";
 import { getMyMembership } from "../services/membershipService";
 import BorderGlow from "../components/BorderGlow";
 import "./events.css";
@@ -17,7 +16,6 @@ const STATUS_SECTIONS = ["upcoming", "ongoing", "completed"];
 const Events = () => {
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
-  const [hiringOpportunities, setHiringOpportunities] = useState([]);
   const [otpInputs, setOtpInputs] = useState({});
   const [loading, setLoading] = useState(true);
   const [canAccessEvents, setCanAccessEvents] = useState(false);
@@ -30,15 +28,6 @@ const Events = () => {
       alert(err.message || "Unable to load events");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const loadHiringOpportunities = async () => {
-    try {
-      const data = await getOpenHiringOpportunities();
-      setHiringOpportunities(data);
-    } catch (err) {
-      console.error(err);
     }
   };
 
@@ -58,7 +47,7 @@ const Events = () => {
         }
 
         setCanAccessEvents(true);
-        await Promise.all([loadEvents(), loadHiringOpportunities()]);
+        await loadEvents();
       } catch (err) {
         alert(err.message || "Please complete membership to access events.");
         navigate("/membership", { replace: true });
@@ -91,7 +80,7 @@ const Events = () => {
       await loadEvents();
       alert("Attendance marked as present");
     } catch (err) {
-      alert(err.message || "OTP verification failed");
+      alert(err.message || "IN OTP verification failed");
     }
   };
 
@@ -161,7 +150,7 @@ const Events = () => {
                           {event.isRegistered && event.attendanceStatus !== "present" && (
                             <div className="otp-box">
                               <input
-                                placeholder="Enter OTP"
+                                placeholder="Enter IN OTP"
                                 value={otpInputs[event._id] || ""}
                                 onChange={(e) =>
                                   setOtpInputs((prev) => ({
@@ -174,7 +163,7 @@ const Events = () => {
                                 className="action-btn secondary"
                                 onClick={() => onVerifyOtp(event._id)}
                               >
-                                Verify OTP
+                                Verify IN OTP
                               </button>
                             </div>
                           )}
@@ -186,41 +175,6 @@ const Events = () => {
                 )}
               </section>
             ))
-          )}
-
-          {hiringOpportunities.length > 0 && (
-            <section className="event-section opportunity-section">
-              <h2>Hiring Opportunities</h2>
-              <div className="opportunity-grid">
-                {hiringOpportunities.map((opportunity) => (
-                  <BorderGlow
-                    key={opportunity._id}
-                    className="opportunity-card-glow"
-                    backgroundColor="#1e293b"
-                    borderRadius={12}
-                    glowRadius={26}
-                    glowColor="200 80 60"
-                    colors={['#f59e0b', '#f97316', '#ea580c']}
-                  >
-                    <article className="opportunity-card-inner">
-                      <div className="opportunity-top">
-                        <h3>{opportunity.title}</h3>
-                        <span className="status-badge open">Open</span>
-                      </div>
-                      <p>{opportunity.description || "No description provided."}</p>
-                      <a
-                        className="apply-btn"
-                        href={opportunity.googleFormLink}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Interested? Apply Now
-                      </a>
-                    </article>
-                  </BorderGlow>
-                ))}
-              </div>
-            </section>
           )}
         </div>
       </div>
