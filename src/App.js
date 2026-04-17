@@ -148,7 +148,14 @@ function App() {
 
         <Route path="/gallery" element={<Gallery />} />
 
-        <Route path="/careers" element={<Careers />} />
+        <Route
+          path="/careers"
+          element={
+            <ProtectedRoute role="user">
+              <Careers />
+            </ProtectedRoute>
+          }
+        />
 
         {/* ADMIN ROUTE */}
         <Route

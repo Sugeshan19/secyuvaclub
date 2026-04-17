@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import BorderGlow from "../components/BorderGlow";
 import { applyForCareer } from "../services/careerService";
+import { getMyMembership } from "../services/membershipService";
 import "./careers.css";
 
 const DOMAINS = [
@@ -43,6 +45,8 @@ const DOMAINS = [
 const DOMAIN_NAMES = DOMAINS.map((item) => item.name);
 
 const Careers = () => {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -54,6 +58,35 @@ const Careers = () => {
     portfolioLink: "",
   });
   const [submitting, setSubmitting] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [canAccessCareers, setCanAccessCareers] = useState(false);
+
+  useEffect(() => {
+    const checkMembershipAccess = async () => {
+      try {
+        const membership = await getMyMembership();
+        const isApproved = membership?.status === "approved";
+        const isValid = membership?.validTill
+          ? new Date(membership.validTill) >= new Date()
+          : false;
+
+        if (!isApproved || !isValid) {
+          alert("Approved membership is required to access careers.");
+          navigate("/membership", { replace: true });
+          return;
+        }
+
+        setCanAccessCareers(true);
+      } catch (err) {
+        alert(err.message || "Please complete membership to access careers.");
+        navigate("/membership", { replace: true });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkMembershipAccess();
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -103,6 +136,12 @@ const Careers = () => {
       <Navbar />
 
       <main className="careers-page">
+        {!canAccessCareers ? (
+          <section className="careers-hero">
+            <h1>{loading ? "Checking membership access..." : "Redirecting..."}</h1>
+          </section>
+        ) : (
+          <>
         <section className="careers-hero">
           <p className="careers-kicker">YUVA Recruitment</p>
           <h1>Careers at YUVA Club - SEC </h1>
@@ -218,6 +257,8 @@ const Careers = () => {
             Apply by Email
           </a>
         </section>
+          </>
+        )}
       </main>
 
       <Footer />
