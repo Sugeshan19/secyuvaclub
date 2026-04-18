@@ -82,8 +82,9 @@ const Navbar = () => {
   };
 
   return (
-    <header className="navbar">
-      <div className="nav-container">
+    <>
+      <header className="navbar">
+        <div className="nav-container">
 
         {/* BRAND */}
         <div className="nav-brand" onClick={() => navigate("/home")}>
@@ -188,8 +189,26 @@ const Navbar = () => {
           )}
         </nav>
 
-      </div>
-    </header>
+        </div>
+      </header>
+
+      {token && (
+        <button
+          type="button"
+          className="chat-fab"
+          aria-label="Open chat"
+          title="Open chat"
+          onClick={() => navigate("/chat")}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 3C6.48 3 2 6.58 2 11c0 2.52 1.46 4.77 3.75 6.23V21a1 1 0 0 0 1.53.85L11.2 19.4c.27.03.53.05.8.05 5.52 0 10-3.58 10-8s-4.48-8-10-8z" />
+            <circle cx="8.5" cy="11" r="1.2" />
+            <circle cx="12" cy="11" r="1.2" />
+            <circle cx="15.5" cy="11" r="1.2" />
+          </svg>
+        </button>
+      )}
+    </>
   );
 };
 
