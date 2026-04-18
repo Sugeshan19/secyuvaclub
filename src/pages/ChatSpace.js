@@ -221,13 +221,18 @@ const ChatSpace = () => {
                 ) : (
                   messages.map((message) => {
                     const mine = String(message.senderUserId) === String(currentUserId);
+                    const senderName =
+                      String(message.senderName || "").trim() || "Member";
                     return (
                       <article
                         key={message.id}
                         className={`chat-bubble ${mine ? "mine" : "other"}`}
                       >
                         <div className="chat-meta">
-                          <strong>{mine ? "You" : message.senderName}</strong>
+                          <strong>
+                            {senderName}
+                            {mine ? " (You)" : ""}
+                          </strong>
                           <span>{formatDateTime(message.createdAt)}</span>
                         </div>
                         <p>{message.text}</p>
