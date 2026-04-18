@@ -16,6 +16,7 @@ import Careers from "./pages/Careers";
 import ProtectedRoute from "./components/ProtectedRoute";
 import VerifyEmail from "./pages/VerifyEmail";
 import FAQs from "./pages/faq";
+import ChatSpace from "./pages/ChatSpace";
 
 function App() {
   const [auth, setAuth] = useState(() => ({
@@ -138,6 +139,15 @@ function App() {
           element={
             <ProtectedRoute role="user">
               <Events />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/chat"
+          element={
+            <ProtectedRoute role="user">
+              <ChatSpace />
             </ProtectedRoute>
           }
         />
